@@ -32,6 +32,8 @@ dependencies:
   dot_navigation_bar: ^1.0.1+4
   flutter:
     sdk: flutter
+  ndialog: ^4.3.0
+  sleek_circular_slider: ^2.0.1
   sweet_nav_bar: ^1.0.5
 
 dev_dependencies:
