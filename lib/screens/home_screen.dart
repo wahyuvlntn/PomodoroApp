@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:dot_navigation_bar/dot_navigation_bar.dart';
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
@@ -16,7 +14,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _currentIndex = 0;
+  int _currentIndex = 1;
   double defaultValue = 300;
   double value = 300.0;
   bool isStarted = false;
@@ -58,6 +56,15 @@ class _HomeState extends State<Home> {
     super.dispose();
   }
 
+  void pauseTimer() {
+  if (_timer.isActive) {
+    _timer.cancel();
+    setState(() {
+      isStarted = false;
+    });
+  }
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,18 +73,59 @@ class _HomeState extends State<Home> {
         child: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 60),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              
+              Center(
+                      child: Container(
+                        child: Text(
+                          'Dont wait for opportunities, create them.    - Roy T. Bennett -',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: 'Monsterrat',
+                            
+                          ),
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                        ),
+                      )
+                    ),
+                     Center(
+                      child: Container(
+                      
+                      height: 45,
+                      width: 264,
+                      decoration: BoxDecoration(
+                        
+                        color: Color(0xFF5A7B91),
+                        borderRadius: const BorderRadius.all(Radius.circular(30))
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Laprak Sisop',
+                            style: TextStyle(
+                              fontFamily: 'Monsterrat',
+                              color: Colors.white,
+                              fontSize: 22,
+                            ),
+                          )
+                        ]
+                      ) 
+                      ),
+                      
+                    ),
+                    
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
+                   
                     Center(
                       child: SizedBox(
                         width: 250,
@@ -137,7 +185,7 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                     const SizedBox(
-                      height: 100,
+                      height: 50,
                     ),
                     GestureDetector(
                       onTap: () {
@@ -157,7 +205,7 @@ class _HomeState extends State<Home> {
                         height: 50,
                         decoration: BoxDecoration(
                           color: Color(0xFF5A7B91),
-                          borderRadius: BorderRadius.circular(7),
+                          borderRadius: const BorderRadius.all(Radius.circular(30)),
                           boxShadow: [
                             BoxShadow(
                               spreadRadius: 3,
@@ -173,6 +221,7 @@ class _HomeState extends State<Home> {
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,
+                            fontFamily: 'Monsterrat',
                             fontWeight: FontWeight.w500,
                           ),
                         ),
