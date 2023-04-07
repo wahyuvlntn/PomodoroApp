@@ -1,9 +1,12 @@
 import 'dart:async';
 
 import 'package:dot_navigation_bar/dot_navigation_bar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
+import 'package:time_picker_spinner_pop_up/time_picker_spinner_pop_up.dart';
+import 'package:slide_popup_dialog_null_safety/slide_popup_dialog.dart' ;
 
 class Home extends StatefulWidget {
   final List<Icon> timesCompleted = [];
@@ -15,17 +18,29 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _currentIndex = 1;
+  int check = 2;
   double defaultValue = 300;
   double value = 300.0;
   bool isStarted = false;
+  bool isPaused = false;
+  bool isOver = false;
   int focusedMins = 0;
   late Timer _timer;
+  List <String> toDoList = ["Laprak PBO","Laprak ASD",'Laprak Sisop'];
+  late String taskName;
+  bool isClick = false;
+  // List <Widget> toDoList = [
+  //   Container(
+  //     height: ,
+  //   ),
+  //   Container()
+  //   ];
 
   @override
   void initState() {
     super.initState();
     SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarColor: Color(0xFFA9CBE3)));
+        SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     
   }
 
@@ -40,7 +55,11 @@ class _HomeState extends State<Home> {
             timer.cancel();
             value = defaultValue;
             isStarted = false;
+            check%2==0 ? isOver = true : isOver = false;
           });
+          print(check);
+          
+          check++;
         } else {
           setState(() {
             value--;
@@ -56,6 +75,15 @@ class _HomeState extends State<Home> {
     super.dispose();
   }
 
+  void stopTimer() {
+    _timer.cancel();
+    setState(() {
+      value = defaultValue;
+      isPaused = false;
+      isStarted = false;
+    });
+  }
+
   void pauseTimer() {
   if (_timer.isActive) {
     _timer.cancel();
@@ -68,7 +96,8 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFA9CBE3),
+      backgroundColor: isStarted ? Color(0xFFA9CBE3) : isPaused?
+      Color(0xFFFFB4AB):Color(0xFF5CDBBD),
       body: SafeArea(
         child: Container(
           width: MediaQuery.of(context).size.width,
@@ -79,7 +108,9 @@ class _HomeState extends State<Home> {
               Center(
                       child: Container(
                         child: Text(
-                          'Dont wait for opportunities, create them.    - Roy T. Bennett -',
+                          isStarted? 'Dont wait for opportunities, create them. \n- Roy T. Bennett -' :
+                          isPaused? "Procrastination is the thief of time. \n- Edward Young -" :
+                          "If you can dream it, you can do it. \n- Walt Disney -",
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18,
@@ -92,32 +123,71 @@ class _HomeState extends State<Home> {
                         ),
                       )
                     ),
-                     Center(
-                      child: Container(
-                      
-                      height: 45,
-                      width: 264,
-                      decoration: BoxDecoration(
-                        
-                        color: Color(0xFF5A7B91),
-                        borderRadius: const BorderRadius.all(Radius.circular(30))
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Laprak Sisop',
-                            style: TextStyle(
-                              fontFamily: 'Monsterrat',
-                              color: Colors.white,
-                              fontSize: 22,
-                            ),
-                          )
-                        ]
-                      ) 
-                      ),
-                      
+                    const SizedBox(
+                      height: 30,
                     ),
+                     Center(
+                       child: GestureDetector(
+                        onTap: (){
+                          showSlideDialog(
+                          context: context,
+                          child: ListView.separated(
+                            shrinkWrap: true,
+                            itemCount: toDoList.length,
+                            itemBuilder: ( context,  index){
+                              return GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    isClick = true;
+                                  taskName = '${toDoList[index]}';
+                                  });
+                                  
+                                },
+                                child: Container(
+                                  height: 36,
+                                  color: Color(0xFF5CDBBD),
+                                  child: Center(
+                                    child: Text('${toDoList[index]}'),
+                                  )
+                                ),
+                              );
+                            },
+                            separatorBuilder: (context, index) {
+                              return Divider();
+                            },
+                            ),
+                          barrierColor: Colors.white.withOpacity(0.7),
+                          pillColor: Colors.red,
+                          backgroundColor: Colors.white,
+                        );
+                        },
+                        child: Container(
+                        
+                        height: 45,
+                        width: 264,
+                        decoration: BoxDecoration(
+                          
+                          color: isStarted ? Color(0xFF5A7B91) : isPaused?
+                          Color(0xFFDE3730): Color(0xFF008770),
+                          borderRadius: const BorderRadius.all(Radius.circular(30))
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              isClick? taskName:'Laprak Sisop',
+                              style: TextStyle(
+                                fontFamily: 'Monsterrat',
+                                color: Colors.white,
+                                fontSize: 22,
+                              ),
+                            )
+                          ]
+                        ) 
+                        ),
+                        
+                                         ),
+                     ),
                     
               Expanded(
                 child: Column(
@@ -144,30 +214,71 @@ class _HomeState extends State<Home> {
                                   shadowWidth: 0,
                                 ),
                                 customColors: CustomSliderColors(
-                                  trackColor: Color(0xFF5A7B91),
-                                  progressBarColor: Color(0xFF294A5E),
+                                  trackColor: isStarted ? Color(0xFF5A7B91) : isPaused?
+                                  Color(0xFFDE3730) : Color(0xFF008770),
+                                  progressBarColor: isStarted ? Color(0xFF294A5E) : isPaused?
+                                  Color(0xFF690005) : Color(0xFF008770),
                                   hideShadow: true,
                                   dotColor: Colors.white,
+                                  // dotColor: isStarted? Colors.white : isPaused ? Colors.white:Colors.transparent ,
                                   
                                 ),
                                 size: 250,
                                 angleRange: 360,
                                 startAngle: 270,
                               ),
-                              onChange: (newValue) {
+                              onChange: (newValue) {                              
                                 setState(() {
                                   value = newValue;
                                 });
                               },
                               innerWidget: (double newValue) {
-                                return Center(
-                                  child: Text(
-                                    "${(value ~/ 60).toInt().toString().padLeft(2, '0')}:${(value % 60).toInt().toString().padLeft(2, '0')}",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 46,
+                                return Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 30,
                                     ),
-                                  ),
+                                    Center(
+                                      child: Container(
+                                        width: 100,
+                                        height: 35,
+                                        decoration: BoxDecoration(
+                        
+                                        color: isStarted ? Color(0xFF5A7B91) : isPaused?
+                                        Color(0xFFDE3730): Color(0xFF008770),
+                                        borderRadius: const BorderRadius.all(Radius.circular(20))
+                                      ),
+                                      child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          isOver? 'Break':
+                                          isStarted?'Focus':isPaused?'Focus':'Idle',
+                                          style: TextStyle(
+                                            fontFamily: 'Monsterrat',
+                                            color: Colors.white,
+                                            fontSize: 22,
+                                          ),
+                                        )
+                                      ]
+                                    ) 
+
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 25,
+                                    ),
+                                    Center(
+                                      child: Text(
+                                        "${(value ~/ 60).toInt().toString().padLeft(2, '0')}:${(value % 60).toInt().toString().padLeft(2, '0')}",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 46,
+                                        ),
+                                      ),
+                                      
+                                    ),
+                                  ],
                                 );
                               },
                             ),
@@ -179,7 +290,8 @@ class _HomeState extends State<Home> {
                                   height: 250,
                                   color: Colors.transparent,
                                 ),
-                              )
+                              ),
+                              
                           ],
                         ),
                       ),
@@ -187,46 +299,116 @@ class _HomeState extends State<Home> {
                     const SizedBox(
                       height: 50,
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          if (!isStarted) {
-                            isStarted = true;
-                            startTimer();
-                          } else {
-                            _timer.cancel();
-                            value = defaultValue;
-                            isStarted = false;
-                          }
-                        });
-                      },
-                      child: Container(
-                        width: 200,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: Color(0xFF5A7B91),
-                          borderRadius: const BorderRadius.all(Radius.circular(30)),
-                          boxShadow: [
-                            BoxShadow(
-                              spreadRadius: 3,
-                              blurRadius: 3,
-                              offset: const Offset(0, 3),
-                              color: Colors.black.withOpacity(0.1),
-                            )
-                          ],
-                        ),
-                        alignment: Alignment.center,
-                        child: Text(
-                          isStarted ? "STOP" : "START",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontFamily: 'Monsterrat',
-                            fontWeight: FontWeight.w500,
+                    Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          if(!isStarted&&!isPaused)
+                          SizedBox(
+                            height: 50,
+                            width: 150,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFF008770),
+                              textStyle: TextStyle(
+                                fontSize: 24,
+                                fontFamily: 'Montserrat',
+                                
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(30)),
+                              ),
+                              ),
+                            onPressed: () {
+                              startTimer();
+                              isStarted = true;
+                            },
+                            child: const Text('Start'),
+                            ),
                           ),
-                        ),
+                          if(isStarted&&!isPaused)
+                          SizedBox(
+                            height: 50,
+                            width: 150,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFF5A7B91),
+                              textStyle: TextStyle(
+                                fontSize: 24,
+                                fontFamily: 'Montserrat',
+                                
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(30)),
+                              ),
+                              ),
+                            onPressed: () {
+                              pauseTimer();
+                              isStarted = false;
+                              isPaused = true;
+                            },
+                            child: const Text('Pause'),
+                            ),
+                          ),
+                          if(!isStarted&&isPaused)
+                          Center(
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                height: 50,
+                                width: 150,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                  backgroundColor: Color(0xFFFFDAD6),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(30)),
+                                  ),
+                                  ),
+                                onPressed: () {
+                                  startTimer();
+                                  isStarted = true;
+                                  isPaused = false;
+                                },
+                                child: const Text(
+                                  'Continue',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontFamily: 'Montserrat',
+                                    color: Colors.black,
+                                  ),
+                                
+                                ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 50,
+                                width: 150,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                  backgroundColor: Color(0xFFBA1A1A),
+                                  textStyle: TextStyle(
+                                    fontSize: 24,
+                                    fontFamily: 'Montserrat',
+                                    
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(30)),
+                                  ),
+                                  ),
+                                onPressed: () {
+                                  stopTimer();
+                                  isStarted = false;
+                                  isPaused = false;
+                                },
+                                child: const Text('Stop'),
+                                ),
+                              ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
+                    )
                   ],
                 ),
               ),

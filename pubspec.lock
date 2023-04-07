@@ -83,6 +83,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  intl:
+    dependency: transitive
+    description:
+      name: intl
+      sha256: a3715e3bc90294e971cb7dc063fbf3cd9ee0ebf8604ffeafabd9e6f16abbdbe6
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.18.0"
   js:
     dependency: transitive
     description:
@@ -152,6 +160,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
+  slide_popup_dialog_null_safety:
+    dependency: "direct main"
+    description:
+      name: slide_popup_dialog_null_safety
+      sha256: "93361043b55ba6734dfe30396d54a1e08c7cefd675deb1ac3416680dc157dc1b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   source_span:
     dependency: transitive
     description:
@@ -208,6 +224,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.4.16"
+  time_picker_spinner_pop_up:
+    dependency: "direct main"
+    description:
+      name: time_picker_spinner_pop_up
+      sha256: "5f6c46839140f048e9fc7114422302ca5e8b088879d9945790461f79c273b2a5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.4"
   typed_data:
     dependency: transitive
     description:
