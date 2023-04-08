@@ -5,6 +5,8 @@ import 'package:pomodoro_app/extension/time_format.dart';
 import 'package:pomodoro_app/utils/dialog_box.dart';
 import 'package:pomodoro_app/utils/todo_tile.dart';
 
+import '../utils/toDoList.dart';
+
 class ToDo extends StatefulWidget {
   const ToDo({Key? key}) : super(key: key);
 
@@ -49,15 +51,15 @@ class _ToDoState extends State<ToDo> {
   }
 
   // makelist to do tasks
-  List toDoList = [
-    [
-      false,
-      "Kalkulus",
-      "10:00 ~ 11 April 2023",
-      "Mengerjakan Latihan 1 di Google Classroom"
-    ],
-    [false, "PBO", "02:30 ~ 11 April 2023", "Mengerjakan study case di Eling"],
-  ];
+  // List toDoList = [
+  //   [
+  //     false,
+  //     "Kalkulus",
+  //     "10:00 ~ 11 April 2023",
+  //     "Mengerjakan Latihan 1 di Google Classroom"
+  //   ],
+  //   [false, "PBO", "02:30 ~ 11 April 2023", "Mengerjakan study case di Eling"],
+  // ];
 
   // chekbox ws tapped
   void checkBoxChange(bool? value, int index) {

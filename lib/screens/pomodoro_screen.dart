@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 import 'package:slide_popup_dialog_null_safety/slide_popup_dialog.dart' ;
 
+import '../utils/toDoList.dart';
 import '../utils/todo_tile.dart';
 
 class Pomodoro extends StatefulWidget {
@@ -26,15 +27,15 @@ class _PomodoroState extends State<Pomodoro> {
   //List <String> toDoList = ["Kalkulus","PBO",'Laprak Sisop'];
   late String taskName;
   bool isClick = false;
-  List toDoList = [
-    [
-      false,
-      "Kalkulus",
-      "10:00 ~ 11 April 2023",
-      "Mengerjakan Latihan 1 di Google Classroom"
-    ],
-    [false, "PBO", "02:30 ~ 11 April 2023", "Mengerjakan study case di Eling"],
-  ];
+  // List toDoList = [
+  //   [
+  //     false,
+  //     "Kalkulus",
+  //     "10:00 ~ 11 April 2023",
+  //     "Mengerjakan Latihan 1 di Google Classroom"
+  //   ],
+  //   [false, "PBO", "02:30 ~ 11 April 2023", "Mengerjakan study case di Eling"],
+  // ];
   @override
   void initState() {
     super.initState();
